@@ -1,0 +1,3 @@
+Faker==37.1.0
+python-ulid==3.0.0
+tzdata==2025.2
