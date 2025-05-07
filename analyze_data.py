@@ -1,15 +1,15 @@
-# ====== Analyze Data Using Grok3
+# ====== Analyze Data and create a report using the Grok3 models
 # Purpose: Analyzes NPS data from nps_data.csv to produce an executive summary with Overall Customer Sentiment,
-# Top 3 Strengths, Top 3 Opportunities, and Recommended Action, then generates a PDF report.
+# Top 3 Strengths, Top 3 Opportunities, and Recommended Action, then generates a PDF report with a logo.
 
 import pandas as pd
 from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 import json
-
+import os
 
 # ====== Function to analyze NPS data
 def analyze_nps_data(df):
@@ -76,7 +76,7 @@ def analyze_nps_data(df):
         else:
             action = "Address key customer pain points by reviewing feedback and implementing targeted improvements to stay competitive."
     else:
-        action = "Continue leveraging strengths while monitoring feedback to maintain industry leadership."
+        activity = "Continue leveraging strengths while monitoring feedback to maintain industry leadership."
 
     result = {
         "summary": {
@@ -112,7 +112,7 @@ def assign_action_column(df):
 # ====== Function to generate PDF report
 def generate_pdf_report(result, output_path="nps_executive_summary.pdf"):
     """
-    Generate a PDF report with the executive summary.
+    Generate a PDF report with the executive summary, including a centered logo at the top.
 
     Args:
         result (dict): Dictionary with 'summary', 'top_strengths', 'top_opportunities', 'recommended_action'
@@ -123,10 +123,29 @@ def generate_pdf_report(result, output_path="nps_executive_summary.pdf"):
 
     title_style = ParagraphStyle('Title', parent=styles['Heading1'], fontSize=18, spaceAfter=20, textColor=colors.black)
     heading_style = ParagraphStyle('Heading', parent=styles['Heading2'], fontSize=14, spaceBefore=12, spaceAfter=10,
-                                   textColor=colors.darkgray)
+                                  textColor=colors.darkgray)
     body_style = ParagraphStyle('Body', parent=styles['BodyText'], fontSize=12, spaceAfter=8)
 
     story = []
+
+    # Add logo at the top center
+    logo_path = "Dunder-Mifflin-Logo.png"
+    if os.path.exists(logo_path):
+        try:
+            logo = Image(logo_path, width=150, height=50)  # Adjust size as needed
+            logo.hAlign = 'CENTER'  # Center the logo
+            story.append(logo)
+            story.append(Spacer(1, 20))  # Space after logo
+        except Exception as e:
+            print(f"Error loading logo: {e}")
+            story.append(Paragraph("Logo not available", body_style))
+            story.append(Spacer(1, 12))
+    else:
+        print(f"Logo file not found at: {logo_path}")
+        story.append(Paragraph("Logo not available", body_style))
+        story.append(Spacer(1, 12))
+
+    # Title and date
     story.append(Paragraph("Executive Customer Sentiment Summary", title_style))
     story.append(Paragraph(f"Generated on: {datetime.now().strftime('%B %d, %Y')}", body_style))
     story.append(Spacer(1, 12))
