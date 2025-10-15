@@ -1,6 +1,7 @@
-# ====== Analyze Data and create a report using the Grok3 models
-# Purpose: Analyzes NPS data from nps_data.csv to produce an executive summary with Overall Customer Sentiment,
-# Top 3 Strengths, Top 3 Opportunities, and Recommended Action, then generates a PDF report with a logo.
+""" Analyze the data and create a high-level PDF report using the model.
+Analyzes NPS data from nps_data.csv to produce an executive summary with Overall Customer Sentiment, Top 3 Strengths,
+Top 3 Opportunities, and Recommended Action, then generates a PDF report with a logo.
+"""
 
 import pandas as pd
 from datetime import datetime
@@ -62,7 +63,7 @@ def analyze_nps_data(df):
         for issue, count in combined_issues.items()
     ]
 
-    # Recommended Action
+    # Assign a recommended Action
     if top_opportunities:
         primary_issue = top_opportunities[0]['reason']
         if "pricing" in primary_issue.lower():

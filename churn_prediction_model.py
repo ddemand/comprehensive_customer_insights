@@ -1,6 +1,8 @@
-# ====== Churn Prediction Model
-# Purpose: Uses machine learning to predict potential churn for non-churned customers in nps_data.csv
-# based on NPS Score and Customer Response, identifying at-risk customers for proactive intervention.
+""" Uses machine learning to predict potential churn for non-churned customers in nps_data.csv based on NPS Score
+and Customer Response, identifying at-risk customers for proactive intervention.
+"""
+
+# Purpose:
 
 import pandas as pd
 import numpy as np

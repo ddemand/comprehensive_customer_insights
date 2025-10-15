@@ -1,9 +1,15 @@
+""" Creates the synthetic dataset and outputs the ‘nps_data.csv’ file for use in the application. """
+
 # ====== Import the required modules
 import random
 import csv
 from datetime import datetime, timedelta
 import ulid  # For generating ULIDs (requires python-ulid)
 from faker import Faker  # For generating fake names
+
+# ====== start_date and end_date variables
+start_date = datetime.now().date().replace(month=1, day=1)  # First day of current year
+end_date = datetime.now().date()  # Today's date
 
 # ====== Initialize Faker for generating fake names
 fake = Faker()
@@ -123,10 +129,6 @@ def generate_churn_reason(selected_topics):
             return churn_reasons[topic]
     # Fallback if no specific reason matches
     return "a better overall experience"
-
-# ====== Set start_date and end_date
-start_date = datetime.now().date().replace(month=1, day=1)  # First day of current year
-end_date = datetime.now().date()  # Today's date
 
 # ====== Generate 205 randomly populated rows of customer comments
 data = []
